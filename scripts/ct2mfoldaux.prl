@@ -1,0 +1,68 @@
+#! /usr/bin/perl
+#                              -*- Mode: Perl -*- 
+# ct2mfoldaux.prl --- 
+# Author          : Amelia Bellamy-Rods
+# Created On      : Summer 2006
+# Last Modified By: Marcel Turcotte
+# Last Modified On: Tue Dec 12 12:31:36 2006
+# 
+# Amelia B. Bellamy-Royds and Marcel Turcotte (2006) Can Clustal-Style 
+#   Progressive Pairwise Alignment of Multiple Sequences Be Used in RNA 
+#   Secondary Structure Prediction?
+#
+# Copyright (C) 2006 University of Ottawa
+#
+# This copyrighted source code is freely distributed under the terms
+# of the GNU General Public License. 
+#
+# See LICENSE for details.
+
+# Uses a ct file to create a set of constraints for the mfold program
+
+use warnings;
+use File::Basename;
+use File::Spec::Functions;
+
+foreach $ctfile (@ARGV) {
+	my ($basename, $path) = fileparse($ctfile, ".ct");
+	my $auxfile = catfile($path, $basename.".aux");
+	
+	open CT, "<", $ctfile;
+	open AUX, ">", $auxfile;
+
+	readline(CT); #discard header line from ct file
+	my ($i, $j, $length);
+	#$i is the 5' end of a helix, $j is the 3' end, 
+	#$length is the number of consecutive basepairs
+	$i = $j = $length = 0;
+	while (<CT>) {
+		my ($index, $base, $prime5, $prime3, $bp , $index2) 
+			= split;
+		if (($length) && ( (!$bp) || ($bp != $j - $length) ) ) {
+			#i.e. end of a helix, write to file
+			print AUX "F $i $j $length\n";
+			$i = $j = $length = 0; #reset markers
+		}
+		if ($bp && ($bp > $index)) {
+			#if current position has a basepair
+			#(for the base at the 5' position only)
+			
+			if (!$length) {
+				#start a new helix:
+				$i = $index;
+				$j = $bp;
+			}
+			$length++;			
+		}
+		
+		
+	}
+	if ($length) {
+		#finish off last helix
+		print AUX "F $i $j $length\n";
+		
+	}
+
+	close CT;
+	close AUX;
+}

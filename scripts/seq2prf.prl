@@ -1,0 +1,53 @@
+#! /usr/bin/perl
+#                              -*- Mode: Perl -*- 
+# seq2prf.prl --- 
+# Author          : Amelia Bellamy-Rods
+# Created On      : Summer 2006
+# Last Modified By: Marcel Turcotte
+# Last Modified On: Mon Dec 11 11:03:33 2006
+# 
+# Amelia B. Bellamy-Royds and Marcel Turcotte (2006) Can Clustal-Style 
+#   Progressive Pairwise Alignment of Multiple Sequences Be Used in RNA 
+#   Secondary Structure Prediction?
+#
+# Copyright (C) 2006 University of Ottawa
+#
+# This copyrighted source code is freely distributed under the terms
+# of the GNU General Public License. 
+#
+# See LICENSE for details.
+
+use warnings;
+
+print "Converts dynalign-style .seq files into Stockholm profile .prf files\n";
+
+foreach $seqfile (@ARGV) {
+	print "File $seqfile ";
+	
+	next unless $seqfile =~ m[seq];
+	($prffile = $seqfile) =~ s[seq][prf];
+	
+	open SEQUENCE, "<", $seqfile;
+	open PROFILE, ">", $prffile;
+	
+	print PROFILE "# STOCKHOLM 1.0\n";
+	readline SEQUENCE; #discard the ; character
+	$seqname = readline SEQUENCE;
+	chomp($seqname);
+	print PROFILE "#=GF ID ", $seqname, "\n";
+	print PROFILE "#=GF SQ 1\n";
+	print PROFILE "#=GF EN 0\n";
+	print PROFILE $seqname, " "x(20 - length($seqname));
+	readline SEQUENCE; #discard blank line
+	$seq = readline SEQUENCE;
+	while (my $line = readline SEQUENCE) {$seq .= $line;}
+	$seq =~ s[\n][];
+	$seq  =~ s[1][];
+	print PROFILE $seq, "\n";
+	print PROFILE "//\n";
+	
+	close SEQUENCE;
+	close PROFILE;
+	
+	print " converted to $prffile\n"
+}

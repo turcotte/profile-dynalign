@@ -1,0 +1,67 @@
+#! /usr/bin/perl
+#                              -*- Mode: Perl -*- 
+# allpairs.prl --- 
+# Author          : Amelia Bellamy-Rods
+# Created On      : Summer 2006
+# Last Modified By: Marcel Turcotte
+# Last Modified On: Mon Dec 11 10:59:46 2006
+# 
+# Amelia B. Bellamy-Royds and Marcel Turcotte (2006) Can Clustal-Style 
+#   Progressive Pairwise Alignment of Multiple Sequences Be Used in RNA 
+#   Secondary Structure Prediction?
+#
+# Copyright (C) 2006 University of Ottawa
+#
+# This copyrighted source code is freely distributed under the terms
+# of the GNU General Public License. 
+#
+# See LICENSE for details.
+
+package TreeBuilder;
+
+use warnings;
+use TreeBuilder;
+use File::Basename;
+
+# Read command line arguments
+
+($InputDir, $OutputDir, %HDargs) = checkInput(@ARGV);
+
+print "Creating a set of all pairwise Profile-Dynalign alignments ";
+print "\nDirectory of input files:\t", $InputDir;
+print "\nDirectory for output files:\t", $OutputDir;
+print "\nSpecified Profile-Dynalign arguments:\n";
+foreach $k (keys(%HDargs)) {
+	print $k, "->", $HDargs{$k}, "\n";
+}
+print "\n";
+	
+# Get the names of all input files:
+@InFiles = getFiles( $InputDir );
+
+# Run all pair-wise alignments,
+# Storing the results in a two-tier "table" of directories
+
+while (my $currentFile = shift @InFiles){
+    next if (@InFiles == 0);
+    $level1 = catfile($OutputDir, basename($currentFile, $ProfileSuffix));
+    mkdir $level1 or die "Could not make required output file $level1\n --";
+      	
+    foreach $otherFile (@InFiles){
+		$level2 = catfile($level1, basename($otherFile, $ProfileSuffix));
+		mkdir $level2 or die "Could not make required output file $level2\n --";
+
+		callHD( $currentFile, $otherFile, $level2, catfile($level2, basename($level1)."-vs-".basename($level2).$ProfileSuffix), %HDargs );
+
+		print "\n\nDONE $currentFile vs $otherFile.\nCumulative time consumed:";
+		my @alltimes = times();
+		print "\nThis process -- User:\t", $alltimes[0];
+		print "\nThis process -- System:\t", $alltimes[1];
+		print "\nAll Child processes -- User:\t", $alltimes[2];
+		print "\nAll Child processes -- System:\t", $alltimes[3];
+		print "\n";
+
+    }
+}
+
+

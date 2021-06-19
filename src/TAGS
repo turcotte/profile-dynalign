@@ -1,0 +1,136 @@
+
+algorithm.cpp,232
+void tonum(77,2399
+void ctout_pf 174,5061
+int openProfile 274,8050
+char *copySubStr(630,19362
+int isValidChar(654,19959
+void alignout(669,20442
+void	append_nucs(873,26102
+void	append_str(896,26698
+void init_lines(915,27188
+
+datatable.cpp,140
+struct datatable datatable41,1307
+datatable::datatable(271,8183
+int penalty2(307,8951
+short int tonumi(324,9415
+int opendat 350,10357
+
+efunctions.cpp,438
+energy_t einternal_pf(62,2078
+energy_t einternal(85,2777
+inline energy_t ehairpin_pf(180,6456
+inline energy_t ehairpin(204,7096
+inline energy_t edangle5_pf(279,9480
+inline energy_t edangle5(303,10127
+inline energy_t edangle3_pf(315,10575
+inline energy_t edangle3(339,11222
+inline energy_t ebp_pf(352,11661
+inline energy_t ebp(376,12298
+inline int penalty_pf(391,12758
+inline int penalty(413,13331
+short int get_inc(428,13802
+
+pd_interface.cpp,40
+void getdat(47,1773
+int main(104,3271
+
+pdynalign.cpp,24
+void pdynalign(59,2044
+
+platform.cpp,145
+#define platfrom34,1209
+#define sgifix 47,1540
+#define binary 48,1573
+int min(54,1613
+int max 62,1674
+int pow10(70,1735
+void itoa 85,1849
+
+profile.cpp,151
+struct profileprofile37,1317
+struct alignmentalignment64,1922
+profile::profile(72,2076
+profile::~profile(82,2203
+void profile::allocate(93,2329
+
+stackclass.cpp,357
+class stackclassstackclass35,1240
+	void allocate_stack(stackclass::allocate_stack40,1306
+	stackclass(stackclass::stackclass51,1485
+	bool pull(stackclass::pull57,1580
+	void push(stackclass::push72,1885
+	short getSize(stackclass::getSize103,2510
+	void delete_array(stackclass::delete_array107,2548
+	~stackclass(stackclass::~stackclass116,2680
+
+structure.cpp,163
+#define STRUCTURE_CPP41,1561
+struct structurestructure49,1695
+structure::structure(116,3668
+structure::~structure(132,3879
+void structure::allocate(143,4022
+
+ASSERT.h,162
+	#define ASSERTFILE(ASSERTFILE11,410
+	#define ASSERT(ASSERT13,476
+	void _Assert(20,575
+	#define ASSERTFILE(ASSERTFILE29,755
+	#define ASSERT(ASSERT30,780
+
+defines.h,1483
+#define DEFINES_H36,1222
+struct HDException HDException40,1293
+	HDException(HDException43,1347
+typedef int energy_t;energy_t57,1781
+#define INFINITE 58,1803
+typedef short energy_t;energy_t62,1876
+#define INFINITE 63,1900
+#define DATA_DIR 74,2407
+#define MAXFIL 76,2440
+#define MAXTLOOP 77,2493
+#define MAXSTRUCTURES 78,2566
+#define MAXBASES 79,2641
+#define MAXFORCE 80,2706
+#define CT_LINE_LN 82,2780
+#define COL 83,2838
+#define NUMLEN 84,2904
+#define MINLOOP 86,2952
+#define MAXLOOP 87,3022
+#define VALID_SYM	89,3107
+#define WHITESPACE 90,3143
+#define LINEBREAK 91,3172
+#define PATH_SEPARATOR 92,3197
+#define DONE	94,3225
+#define IO_ERR	95,3242
+#define BAD_INPUT	96,3261
+#define FILE_ERR	97,3283
+#define ERR	98,3304
+#define MBLFreeBase	100,3323
+#define MBLClose	101,3353
+#define MBLHelix	102,3380
+#define ID_LN_MAX	105,3449
+#define NUM_SEQ_MAX	107,3510
+#define SEQNAME_LN	108,3580
+#define SEQ_LN_MAX	111,3769
+#define STOCKHOLM_HEADER	113,3849
+#define	STOCKHOLM_END	114,3908
+#define STOCKHOLM_MARKUP_START 115,3963
+#define FILE_MARKUP 118,4102
+#define SEQ_MARKUP 119,4174
+#define COL_MARKUP 120,4249
+#define SEQ_COL_MARKUP 121,4334
+#define COMMENT_MARKER 124,4509
+#define ID_MARKER 125,4582
+#define NSEQ_MARKER 126,4634
+#define TOTAL_E_MARKER 127,4715
+#define AVG_E_MARKER 128,4806
+#define GP_MARKER 129,4902
+#define TOTAL_GAP_MARKER 130,4968
+#define MAXSEP_MARKER 131,5049
+#define BP_MARKER 132,5125
+#define SS_MARKER 135,5268
+
+pdynalign.h,26
+#define dynalignh39,1421

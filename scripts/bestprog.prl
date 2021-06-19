@@ -1,0 +1,82 @@
+#! /usr/bin/perl
+#                              -*- Mode: Perl -*- 
+# bestprog.prl --- 
+# Author          : Amelia Bellamy-Rods
+# Created On      : Summer 2006
+# Last Modified By: Marcel Turcotte
+# Last Modified On: Tue Dec 12 12:30:57 2006
+# 
+# Amelia B. Bellamy-Royds and Marcel Turcotte (2006) Can Clustal-Style 
+#   Progressive Pairwise Alignment of Multiple Sequences Be Used in RNA 
+#   Secondary Structure Prediction?
+#
+# Copyright (C) 2006 University of Ottawa
+#
+# This copyrighted source code is freely distributed under the terms
+# of the GNU General Public License. 
+#
+# See LICENSE for details.
+
+package TreeBuilder;
+
+use warnings;
+use TreeBuilder;
+use File::Basename;
+
+#Read command line arguments
+($InputDir, $OutputDir, $AllPairsDir,  %HDargs) = checkInput(@ARGV);
+#NOTE that the $AllPairsDir MUST have been created with allpairs.prl
+#from the same $InputDir files, 
+#(usually with the same or more stringent HDargs)
+
+
+print "Creating an H-dynalign alignment in a progressive fashion";
+print " by joining sequences with the best energy scores from all pairwise alignments.\n";
+print "\nDirectory of input files:\t", $InputDir;
+print "\nDirectory of pairwise alignment results:\t", $AllPairsDir;
+print "\nDirectory for output files:\t", $OutputDir;
+
+print "";
+print "\nSpecified Profile-Dynalign arguments:\n";
+foreach $k (keys(%HDargs)) {
+	print $k, "->", $HDargs{$k}, "\n";
+}
+print "\n";
+	
+#Get the names of all input files:
+@InFiles = getFiles( $InputDir );
+
+#Scan through all pair-wise alignments, 
+#and store the energy values in a table (two-d hash)
+#Then use that table to create a nearest neigbour tree
+#using references to arrays as the nodes
+#and save the root node:
+my $root = ProgressiveAlignment( getEnergyTableFromPairs($AllPairsDir, @InFiles));
+
+#print tree and create dendogram:
+my ($printString, $dendString) = printTree($root, 0, "", "");
+print "Progressive alignment guide tree:\n", $printString, "\n";
+
+#save $dendString to a file:
+my $dendfile = catfile ($OutputDir, "guidetree.dnd");
+open DEND, ">", $dendfile or die "Cannot create output file $dendfile\n--";
+print DEND $dendString;
+close DEND;
+print "Wrote dendogram to file $dendfile\n\n";
+
+#Use the dendogram file to build a file tree:
+buildTreeFromDendogram($dendfile, $OutputDir, @InFiles);
+
+#traverse tree and call HDynalign program
+traverseTree($OutputDir, %HDargs);
+
+print "\n\nDone.  Total time consumed:";
+my @alltimes = times();
+print "\nThis process -- User:\t", $alltimes[0];
+print "\nThis process -- System:\t", $alltimes[1];
+print "\nAll Child processes -- User:\t", $alltimes[2];
+print "\nAll Child processes -- System:\t", $alltimes[3];
+print "\n";
+
+
+
